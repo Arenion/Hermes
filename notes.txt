@@ -1,0 +1,15 @@
+						Notes pour le projet hermes
+
+	Ce document est dédié à stocker mes idées/idées des autres sur ce qu'il faudrait faire pour le projet Hermes
+
+	Il faudrait faire une interface graphique
+	types de comptes:-Association(associations+club+commision): elles sont censés durer mais on doit les renouveler chaque ans (quand les responsables changent)
+			 -Listes: Elles doivent durer juste une année en théorie (1 an et demi dans le doute je pense)
+			 -Projet Eleves: On les fait durer juste sur la durée de l'enseignement à centrale (promo + 1 pour les césures)
+			 -PDI: Projets des 3émes années, elles doivent juste durer une année
+			 -divers: pour le reste
+	Pour nous, il faudrait créer un utilisateur rezoleo_asso en plus de rezoleo pour que les sites et la maintenance classique ne soient pas au même endroit.
+	Par rapport à avant, j'ai enlevé activité prof parceque personne ne l'utilisait
+	Il faudrait faire le compte mysql en même temps, avec une option (handler ?)
+	
+			 
