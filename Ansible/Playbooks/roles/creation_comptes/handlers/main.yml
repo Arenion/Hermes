@@ -1,0 +1,12 @@
+- name: Empéche l'accés des Utilisateurs en SSH
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers Utilisateurs-Services"
+
+- name: Restart sshd
+  become: true
+  ansible.builtin.service:
+    name: "sshd"
+    state: restarted
+    enabled: true

@@ -1,0 +1,24 @@
+- name: Test des filtres de 'filter_creation_compte_hermes.py'
+  hosts: localhost
+  gather_facts: false
+  vars:
+    date: 2025
+    user_type1: Zeroleo
+    user_type2: Liste
+    user_type3: PDI
+    user_name: rezoleo
+    user_year: 2025
+  tasks:
+    - name: Debuggage
+      ansible.builtin.debug:
+        msg: "{{ user_type3 | get_home_path(user_name, user_year) }}"
+    - name: "Check si les filtres de création de compte marchent"
+      ansible.builtin.assert:
+        fail_msg: "Erreur ! Il faut vérifier le script Playbooks/roles/filters_plugins/filter_creation_compte_hermes.py"
+        success_msg: "Succés du test"
+        that:
+          - "user_type2|get_uid == (2000,2999)"
+          - ((user_type2|get_expiration_date(user_year,2025))| to_datetime("%Y_%m_%d")) == ( "2026_02_01"| to_datetime("%Y_%m_%d"))
+          - ((user_type3|get_expiration_date(user_year,'2025'))| to_datetime("%Y_%m_%d")) ==( "2026_01_01"| to_datetime("%Y_%m_%d"))
+          - user_type2|get_home_path(user_name,user_year)=="/home/Liste/rezoleo"
+          - user_type3|get_home_path(user_name,user_year)=="/home/PDI/2025/rezoleo"

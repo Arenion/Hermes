@@ -1,0 +1,3 @@
+date: "{{ ('%Y' | strftime)}}" # date actuelle
+date_full: "{{ ( '%Y-%m-%d %H_%M_%S' | strftime ) }}" # date actuelle compléte, pour faire des tests
+database: "getent_shadow.{{ user_name }}"

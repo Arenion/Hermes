@@ -1,0 +1,5 @@
+- name: "Test if creation of user work"
+  hosts: mysql
+  roles:
+    - role: creation_comptes
+    
