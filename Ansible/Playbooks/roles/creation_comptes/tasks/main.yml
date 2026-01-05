@@ -11,13 +11,14 @@
     name: Utilisateurs-Services
   notify:
     - Empéche l'accés des Utilisateurs en SSH
+    - Permet l'accés en sftp
     - Restart sshd
 
 - name: Créer le compte d'un utilisateur
   become: true
   ansible.builtin.user:
     append: true
-    home: "{{ user_type | get_home_path(user_name,user_year) }}"
+    home: "{{home_path}}"
     name: "{{ user_name }}"
     expires: "{{ (( user_type | get_expiration_date( user_year,  (date | int) )) | to_datetime('%Y_%m_%d')).timestamp() }}"
     password: "{{ user_hash }}"
@@ -28,13 +29,14 @@
 #   community.mysql.mysql_user:
 #     name: "{{ user_name }}"
 
-# - name: Empéche l'accés ssh à l'utilisateur
-#   become: true
-#   ansible.builtin.lineinfile:
-#     path: /etc/ssh/ssh_config
-#     line: "    DenyUsers {{ user_name }}"
-#   notify:
-#     - Restart sshd
+- name: Créer un dossier writable dans le home
+  become: true
+  become_user: "{{ user_name }}"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ home_path }}/writable"
+    mode: ug+rwX
+
 
 - name: Créer un utilisateur debug pour tester des trucs
   become: true
@@ -44,3 +46,4 @@
   tags:
     - debug
     - never
+
