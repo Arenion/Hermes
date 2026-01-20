@@ -1,0 +1,19 @@
+
+  php:
+    image: " {{ item.value.image }} "
+    user: "{{ userdata.uid }}"
+    userns_mode: "host"
+    restart: always
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:{{ item.value.url }}"
+      - "traefik.port=8080"
+      - "traefik.network=proxy"
+    volumes:
+      - "{{home_path}}/writable:/var/www/html/"
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/{{ item.value.environment }}
+
+

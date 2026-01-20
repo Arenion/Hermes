@@ -24,12 +24,13 @@
     password: "{{ user_hash }}"
     update_password: on_create
     groups: Utilisateurs-Services
+  register: userdata
     # je metztrais uid_min et uid_max ici si mon ansible etait à jour
 # - name: Créer le compte mysql
 #   community.mysql.mysql_user:
 #     name: "{{ user_name }}"
 
-- name: Créer un dossier writable dans le home
+- name: Create writable folder for user
   become: true
   become_user: "{{ user_name }}"
   ansible.builtin.file:
@@ -47,3 +48,9 @@
     - debug
     - never
 
+- name: Affiche uid
+  ansible.builtin.debug:
+    msg : "{{userdata.uid}}"
+  tags:
+   - debug
+   - never

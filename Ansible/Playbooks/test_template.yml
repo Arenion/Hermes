@@ -1,0 +1,11 @@
+- name: test du template de docker compose  
+  hosts: localhost
+  vars:
+    user_id: 1
+    user_name: Zeroleo
+    home_path: /home/vannereux
+  tasks:
+    - name: Copy and fill template file for docker compose
+      ansible.builtin.template:
+        src: ../Templates/template_docker_compose.yml
+        dest: ../O/result

@@ -1,0 +1,37 @@
+- name: Create  a docker folder in docker-manager path
+  become: true
+  become_user: "docker-manager"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ docker_compose_path }}"
+    mode: ug+rwX
+
+- name: Initialise un fichier docker-compose
+  become: true
+  become_user: docker-manager
+  ansible.builtin.blockinfile:
+    dest: "{{ docker_compose_path }}/docker-compose.yml"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK- INITIALISATION"
+    insertafter: INITIALISATION
+    create: True
+    block: |
+      networks:
+        proxy:
+          external: true
+          name: proxy
+      services:
+# - name: debug
+#   ansible.builtin.debug:
+#     msg: "{{item.value.type}}"
+#   with_items: " {{ sites['absinthe']['docker_compose'] | dict2items }}"
+
+- name: Put a default docker-compose file in a default location (one per user)
+  become: true
+  become_user: docker-manager
+  ansible.builtin.blockinfile:
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - {{ item.key }} {{ site_name }}"
+    insertafter: "{{ item.key }} {{ site_name }}"
+    dest: "{{ docker_compose_path }}/docker-compose.yml"
+    block: " {{ lookup('template', 'roles/docker_init/templates/' + item.key + '.j2') }}"
+    validate: docker-compose config --quiet
+  with_items: " {{ sites['absinthe']['docker_compose'] | dict2items }}"

@@ -2,4 +2,5 @@
   hosts: mysql
   roles:
     - role: creation_comptes
+    - role: docker_init
     

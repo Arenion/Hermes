@@ -1,0 +1,4 @@
+- name: Déploit le site d'un utilisateur
+  hosts: all
+  roles: 
+   - role: deploy serveur

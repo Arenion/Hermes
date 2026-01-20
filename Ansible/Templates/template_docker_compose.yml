@@ -1,0 +1,22 @@
+
+services:
+  php:
+    image: rezoleo/php:7.3-apache
+    # user-id of bde1 (run `id -u bde`)
+    user: "{{user_id}}"
+    userns_mode: "host"
+    restart: always
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:{{user_name}}.rezoleo.fr"
+      - "traefik.port=8080"
+      - "traefik.network=proxy"
+    volumes:
+      - "{{home_path}}/writable:/var/www/html/"
+
+networks:
+  proxy:
+    external: true
+

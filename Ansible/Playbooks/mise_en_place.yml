@@ -1,0 +1,4 @@
+- name: Mise en place du serveur, à ne faire qu'une seule fois
+  hosts: mysql
+  roles:
+    - mise_en_place_de_docker

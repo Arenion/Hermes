@@ -1,0 +1,12 @@
+sites:
+  absinthe:
+    user: bde
+    mysql_install: false
+    docker_compose:
+      php:
+        image: 'rezoleo/php:7.3-apache'
+        environment: 'public' # leave empty if using default apache root !
+        url: 'absinthe.rezoleo.fr'
+
+path_to_template: "roles/docker_init/templates/{{item.key}}.j2"
+site_name: absinthe
