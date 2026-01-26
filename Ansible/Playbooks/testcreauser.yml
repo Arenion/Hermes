@@ -2,5 +2,16 @@
   hosts: mysql
   roles:
     - role: creation_comptes
-    - role: docker_init
-    
+  tasks:
+    - name: Load Config file
+      ansible.builtin.include_vars:
+        file: /home/vannereux/Documents/Dossieleo/Hermes/Ansible/Configurations/conf_absinthe.yml
+    # - name: Debug
+    #   ansible.builtin.debug:
+    #     msg: "{{ liste_sites  }}"
+    - name: "Initialisation des fichiers docker-compose des sites "
+      ansible.builtin.include_role:
+        name: docker_init
+      # loop: "{{ sites | dict2items }}"
+      # loop_control:
+      #   loop_var: site

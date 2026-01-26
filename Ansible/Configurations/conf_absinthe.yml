@@ -1,0 +1,23 @@
+sites:
+  absinthe:
+    user: bde
+    mysql_install: false
+    docker_compose:
+      php:
+        image: 'rezoleo/php:7.3-apache'
+        need_user: Yes
+        label: 
+          url: "{{default_url}}"
+          port: 3333
+        volumes: whu
+        networks:
+          - proxy
+        environment:
+          APACHE_DOCUMENT_ROOT: /var/www/html/public
+      node:
+        image: node:10-alpine
+        need_user: Yes
+        network_mode: none
+        volumes: "traefik.frontend.rule"
+        working_dir: "/app"
+        command: "node ./limenius-react-renderer.js"
