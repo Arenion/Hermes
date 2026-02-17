@@ -39,10 +39,10 @@ services:
 {% endfor %}
 {% endif %}
 {% if "entrypoint" in services[service_name] %}
-    entrypoint: {{ services[service_name].entrypoint }}
+        entrypoint: {{ services[service_name].entrypoint }}
 {%endif%}
 {% if "container_name" in services[service_name] %}
-    container_name: {{services[service_name].container_name}}
+        container_name: {{services[service_name].container_name}}
 {% endif %}
 {% if "command" in services[service_name] %}
         command: "{{services[service_name].command}}"
