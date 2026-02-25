@@ -1,4 +1,6 @@
 
+
+
 - name: Créer le groupe utilisateur
   become: true
   ansible.builtin.group:
@@ -18,6 +20,8 @@
     password: "{{ user_hash }}"
     update_password: on_create
     groups: Utilisateurs-Services
+    uid_min: "{{ (user_type | get_uid)[0] }}"
+    uid_max: "{{ (user_type | get_uid)[1] }}"
   register: userdata
 
 - name: Create writable folder for user
@@ -30,21 +34,22 @@
     
 - name: Create Mysql compte
   community.mysql.mysql_user:
-    name: {{user_name}}
+    name: "{{user_name}}"
     login_host: mysql.rezoleo.fr
     login_user: admin
     login_port: 3306
-    login_password: "{{mysql_secret.secret.password}}" 
+    login_password: "{{mysql_secret.secret.password}}"
+  when: mysql_account
 
-- name: Include configuration file 
-  ansible.builtin.include_vars:
-    file: "{{confpath}}/conf_{{user_name}}.yml"
-- name: Set up Containers for {{user_name}}
-  ansible.builtin.include_role:
-    name: docker_init
-  loop: "{{ sites | dict2items }}"
-  loop_control:
-    loop_var: site
+# - name: Include configuration file 
+#   ansible.builtin.include_vars:
+#     file: "{{confpath}}/conf_{{user_name}}.yml"
+# - name: Set up Containers for {{user_name}}
+#   ansible.builtin.include_role:
+#     name: docker_init
+#   loop: "{{ sites | dict2items }}"
+#   loop_control:
+#     loop_var: site
 
 
 - name: Affiche uid

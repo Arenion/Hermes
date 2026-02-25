@@ -1,31 +1,25 @@
 - name: "Test if creation of user work"
   hosts: mysql
   vars:
-    - confpath: /home/vannereux/Documents/Dossieleo/Hermes/Ansible/Configurations/conf_absinthe.yml
-  roles:
-    - role: creation_comptes
+    confpath: /home/vannereux/Documents/Dossieleo/Hermes/Ansible/Configurations
   tasks:
-    - name: Get password for mysql
-      community.hashi_vault.vault_kv2_get:
-      path: "databases/admin@mysql.rezoleo.fr"
-      register: mysql_secret
-      delegate_to: localhost  
-      run_once: true
+    # - name: Get password for mysql
+    #   community.hashi_vault.vault_kv2_get:
+    #     path: "databases/admin@mysql.rezoleo.fr"
+    #   register: mysql_secret
+    #   delegate_to: localhost  
+    #   run_once: true
     - name: Load Config file
       ansible.builtin.include_vars:
-        file: "{{confpath}}" 
+        file: "{{ confpath }}/conf_users.yml"
+      delegate_to: localhost  
     - name: "Create user and set up his containers"
       ansible.builtin.include_role:
         name: creation_comptes
-      loop: "{{users | dict2items}}"      
+      loop: "{{ users }}"      
       loop_control:
         loop_var: usern
     # - name: Debug
     #   ansible.builtin.debug:
-    #     msg: "{{ liste_sites  }}"
-    - name: "Initialisation des fichiers docker-compose des sites "
-      ansible.builtin.include_role:
-        name: docker_init
-      loop: "{{ sites | dict2items }}"
-      loop_control:
-        loop_var: site
+    #     msg: "{{ usern }}"
+

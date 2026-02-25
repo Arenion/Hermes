@@ -1,1 +1,12 @@
 users:
+  -
+      user_name: "bde"
+      user_type: Association 
+      mysql_account: False
+  - 
+      user_name: "NV"
+      user_type: PDI 
+      mysql_account: False
+  #- user 2 info
+  #- user 3 info
+  #- user 4 info
