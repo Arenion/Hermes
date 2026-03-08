@@ -3,13 +3,25 @@
   become_user: "docker-manager"
   ansible.builtin.file:
     state: directory
-    path: "{{ docker_compose_path }}"
+    path: "{{ docker_compose_path }}/{{site.key}}"
     mode: ug+rwX
+- name: Set up service value for template # les valeurs de services ne se mettent pas à jour si elle sont définis dans le role, et il faut une tache à part entière pour que ça marche
+  ansible.builtin.set_fact:
+    services: "{{ site.value }}"
+- name: Debug
+  ansible.builtin.debug:
+    msg: "{{ site.value }}"
+- name: Debug
+  ansible.builtin.debug:
+    msg: "{{ services }}"
+- name: Debug
+  ansible.builtin.debug:
+    msg: "{{ default_url }}"
 
-- name: Create a Compose.yml file
+- name: Create a Compose.yml file for {{ site.key }}
   become: true
   become_user: "docker-manager"
   ansible.builtin.template:
     src: "{{ path_to_template }}"
-    dest: "{{ docker_compose_path }}/compose.yml"
+    dest: "{{ docker_compose_path }}/{{site.key}}/compose.yml"
     validate: docker-compose -f %s config --quiet

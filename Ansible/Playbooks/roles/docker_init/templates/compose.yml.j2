@@ -12,7 +12,12 @@ services:
 {% if 'label' in services[service_name] %}
         labels:
             - "traefik.enable=true"
-            - "traefik.frontend.rule=Host:{{ services[service_name].label.url }}"      
+{% if "url" in services[service_name].label %}
+            - "traefik.frontend.rule=Host:{{ services[service_name].label.url }}"
+{% endif %}
+{% if not "url" in services[service_name].label and "port" in services[service_name].label %}
+            - "traefik.frontend.rule=Host:{{ default_url }}"
+{% endif %}
             - "traefik.port={{ services[service_name].label.port }}"
             - "traefik.network=proxy"
 {% endif %}

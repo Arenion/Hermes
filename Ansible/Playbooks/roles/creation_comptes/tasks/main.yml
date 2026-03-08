@@ -1,22 +1,10 @@
-
-
-
-- name: Créer le groupe utilisateur
-  become: true
-  ansible.builtin.group:
-    name: Utilisateurs-Services
-  notify:
-    - Empéche l'accés des Utilisateurs en SSH
-    - Permet l'accés en sftp
-    - Restart sshd
-
 - name: Créer le compte d'un utilisateur
   become: true
   ansible.builtin.user:
     append: true
-    home: "{{home_path}}"
+    home: "{{ home_path }}"
     name: "{{ user_name }}"
-    expires: "{{ (( user_type | get_expiration_date( user_year,  (date | int) )) | to_datetime('%Y_%m_%d')).timestamp() }}"
+    expires: "{{ ((user_type | get_expiration_date( user_year,  (date | int))) | to_datetime('%Y_%m_%d')).timestamp() }}"
     password: "{{ user_hash }}"
     update_password: on_create
     groups: Utilisateurs-Services
@@ -31,30 +19,43 @@
     state: directory
     path: "{{ home_path }}/writable"
     mode: ug+rwX
-    
-- name: Create Mysql compte
-  community.mysql.mysql_user:
-    name: "{{user_name}}"
+- name: Create Mysql db
+  community.mysql.mysql_db:
+    name: "{{ db_name }}"
     login_host: mysql.rezoleo.fr
     login_user: admin
     login_port: 3306
-    login_password: "{{mysql_secret.secret.password}}"
+    login_password: "{{ mysql_secret.secret.password }}"
   when: mysql_account
+  loop: "{{ mysql_db }}"
+  loop_control:
+    loop_var: db_name
+- name: Create Mysql compte
+  community.mysql.mysql_user:
+    name: "{{ user_name }}"
+    login_host: mysql.rezoleo.fr
+    login_user: admin
+    login_port: 3306
+    login_password: "{{ mysql_secret.secret.password }}"
+  when: mysql_account
+  loop: "{{ mysql_db }}"
+  loop_control:
+    loop_var: db_name
+- name: Include configuration file
+  ansible.builtin.include_vars:
+    file: "{{ confpath }}/conf_{{ user_name }}.yml"
 
-# - name: Include configuration file 
-#   ansible.builtin.include_vars:
-#     file: "{{confpath}}/conf_{{user_name}}.yml"
-# - name: Set up Containers for {{user_name}}
-#   ansible.builtin.include_role:
-#     name: docker_init
-#   loop: "{{ sites | dict2items }}"
-#   loop_control:
-#     loop_var: site
+- name: Set up Containers for {{ user_name }}
+  ansible.builtin.include_role:
+    name: docker_init
+  loop: "{{ sites | dict2items }}"
+  loop_control:
+    loop_var: site
 
 
 - name: Affiche uid
   ansible.builtin.debug:
-    msg : "{{userdata.uid}}"
+    msg : "{{ userdata.uid }}"
   tags:
    - debug
    - never
