@@ -1,7 +1,0 @@
-user_type: "{{ usern['user_type'] }}" # type de l'utilisateur : Association, Liste, Projet, Divers, Projet Individuel, PDI
-user_name: "{{ usern['user_name'] }}" # nom de l'utilisateur
-user_year: "{{ now(fmt='%Y') }}" # année de promo de l'éléve, modifier si l'utilisateur est un éleve (projet perso ou PDI)
-mysql_install: false # Si oui ou non il faut un compte mysql
-user_pswd: defaut # à changer manuellement aprés !
-user_hash: "{{ user_pswd | password_hash }}"
-mysql_account: false
