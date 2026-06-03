@@ -1,0 +1,12 @@
+sites:
+  bds:
+    php:
+      image: 'rezoleo/php:7.3-apache'
+      need_user: Yes
+      label:
+        url: bds.centralelille.fr
+        port: 8080
+      networks:
+        - proxy
+      environment:
+        APACHE_DOCUMENT_ROOT: /var/www/html/public

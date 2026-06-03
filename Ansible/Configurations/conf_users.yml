@@ -1,17 +1,77 @@
 users:
   -
-      user_name: "bde"
-      user_type: Association 
-      mysql_account: False
-  - 
-      user_name: "NV"
-      user_type: PDI 
-      mysql_account: False
-
-  -
-    user_name: "bda"
+    user_name: bde
     user_type: Association
-    mysql_account: False
+  -
+    user_name: rtb
+    user_type: Divers
+  -
+    user_name: bda
+    user_type: Association
+  -
+    user_name: bds
+    user_type: Association
+  -
+    user_name: fti
+    user_type: Association
+  -
+    user_name: dvc
+    user_type: Association
+  -
+    user_name: fanfare
+    user_type: Association
+  -
+    user_name: paingouin
+    user_type: Association
+  -
+    user_name: eclosion
+    user_type: Association
+  -
+    user_name: cag
+    user_type: Association
+  -
+    user_name: clp
+    user_type: Association
+  -
+    user_name: forum_wiki
+    user_type: Association
+  -
+    user_name: clac
+    user_type: Association
+  -
+    user_name: bleroux
+    user_type: Projet Individuel
+    user_year: 2026
+  -
+    user_name: lperetti
+    user_type: Projet Individuel
+    user_year: 2026
+  -
+    user_name: nle_roux_mbaye
+    user_type: Projet Individuel
+    user_year: 2027
+
+  - user_name: fwattinne
+    user_type: Projet Individuel
+    user_year: 2027
+
+  - user_name: quguen
+    user_type: Projet Individuel
+    user_year: 2025
+
+  - user_name: vgregoire
+    user_type: Projet Individuel
+    user_year: 2027
+
+  - user_name: aparis
+    user_type: Projet Individuel
+    user_year: 2027
+
+  - user_name: cameo
+    user_type: Association
+
+  - user_name: poucedeplatione
+    user_type: Association
   #- user 2 info
   #- user 3 info
   #- user 4 info
