@@ -5,7 +5,6 @@
     state: present
     name:
       - docker-compose
-      - docker-ce
       - docker-cli
       - docker-buildx
       - docker.io
