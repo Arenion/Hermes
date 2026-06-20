@@ -37,6 +37,7 @@
       ansible.builtin.systemd_service:
         name: docker
         state: "started"
+      become: true
     - name: Load Config file
       ansible.builtin.include_vars:
         file: "{{ hermes_confpath }}/conf_users.yml"
