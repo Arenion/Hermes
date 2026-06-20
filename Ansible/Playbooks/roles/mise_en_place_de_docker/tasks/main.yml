@@ -13,8 +13,8 @@
 
 - name: Create  a docker folder in docker-manager path
   become: true
-  become_user: "docker-manager"
   ansible.builtin.file:
     state: directory
     path: "/home/docker-manager/docker"
     mode: ug+rwX
+    owner: "docker-manager"
