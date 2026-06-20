@@ -5,7 +5,10 @@
     state: present
     name:
       - docker-compose
-
+      - docker-ce
+      - docker-cli
+      - docker-buildx
+      - docker.io
 - name: Create a docker user
   become: true
   ansible.builtin.user:
