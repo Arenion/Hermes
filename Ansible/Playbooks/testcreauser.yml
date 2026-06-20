@@ -42,6 +42,7 @@
     - name: Launch Traefik
       community.docker.docker_network:
         name: proxy
+      become: true
 
     - name: Load Config file
       ansible.builtin.include_vars:
