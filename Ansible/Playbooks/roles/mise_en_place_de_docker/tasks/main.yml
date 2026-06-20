@@ -4,7 +4,6 @@
     update_cache: true
     state: present
     name:
-      - docker
       - docker-compose
 
 - name: Create a docker user
