@@ -15,12 +15,12 @@
     - name: Install Needed-packets
       ansible.builtin.apt:
         name:
-          - docker
+    #      - docker
           - docker-compose
       become: true
-    - name: Install docker-compose V2
-      ansible.builtin.include_role:
-        name: Install_docker_compose_v2
+    #- name: Install docker-compose V2
+    #  ansible.builtin.include_role:
+    #   name: Install_docker_compose_v2
     # - name: Get password for mysql
     #   community.hashi_vault.vault_kv2_get:
     #     path: "databases/admin@mysql.rezoleo.fr"
