@@ -1,7 +1,7 @@
 - name: "Test if creation of user work"
   hosts: services
   vars:
-    hermes_confpath: home/rezoleo/ansible-playbooks/Hermes/Ansible/Configurations
+    hermes_confpath: /home/rezoleo/ansible-playbooks/Hermes/Ansible/Configurations
   tasks:
     - name: Create Utilisateurs-Services user group
       ansible.builtin.group:
