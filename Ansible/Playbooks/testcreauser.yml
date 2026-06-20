@@ -29,6 +29,9 @@
     #   register: mysql_secret
     #   delegate_to: localhost
     #   run_once: true
+    - name: Initialise docker
+      ansible.builtin.include_role:
+        name: mise_en_place_de_docker
     - name: Load Config file
       ansible.builtin.include_vars:
         file: "{{ hermes_confpath }}/conf_users.yml"
