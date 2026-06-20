@@ -38,6 +38,11 @@
         name: docker
         state: "started"
       become: true
+
+    - name: Launch Traefik
+      community.docker.docker_network:
+        name: proxy
+
     - name: Load Config file
       ansible.builtin.include_vars:
         file: "{{ hermes_confpath }}/conf_users.yml"
