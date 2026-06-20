@@ -1,6 +1,6 @@
 # !/usr/bin/python
 # -*- encoding: utf8 -*-'
-import crypt
+#import crypt
 
 Type_Renouvellement_annuel= ['Association','Liste','Projet','Divers']
 Type_Personnel= ['PDI','Projet Individuel']
@@ -36,8 +36,8 @@ def get_expiration_date(user_type,user_year,date_année):
     if user_type in Type_Personnel:
         return(str(int(user_year)+1)+'_01_01')#on met un +1 pour la césure, et je sais str(int(...)) c'est dégueu, mais ansible transforme toutes ses entrées en str donc c'est chiant
 
-def checpswd(plain,hash):
-    return crypt.crypt(plain,hash)==hash
+# def checpswd(plain,hash):
+#     return crypt.crypt(plain,hash)==hash
 
 class FilterModule(object):
     '''give back filters to ansible '''
@@ -46,5 +46,5 @@ class FilterModule(object):
             'get_uidrange':get_uidrange,
             'get_home_path':get_home_path,
             'get_expiration_date':get_expiration_date,
-            'checpswd':checpswd
+            # 'checpswd':checpswd
             }
