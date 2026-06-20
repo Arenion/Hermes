@@ -12,13 +12,18 @@ services:
 {% if 'label' in services[service_name] %}
         labels:
             - "traefik.enable=true"
-            - "traefik.frontend.rule=Host:{{ services[service_name].label.url }}"      
+{% if "url" in services[service_name].label %}
+            - "traefik.frontend.rule=Host:{{ services[service_name].label.url }}"
+{% endif %}
+{% if not "url" in services[service_name].label and "port" in services[service_name].label %}
+            - "traefik.frontend.rule=Host:{{ default_url }}"
+{% endif %}
             - "traefik.port={{ services[service_name].label.port }}"
             - "traefik.network=proxy"
 {% endif %}
 {% if "volumes" in services[service_name] %}
         volumes:
-            - "{{home_path}}/writable:/app"
+            - "{{ hermes_account_home_path }}/writable:/app"
 {% endif %}
 {% if "environment" in services[service_name]%}
         environment:
@@ -39,10 +44,10 @@ services:
 {% endfor %}
 {% endif %}
 {% if "entrypoint" in services[service_name] %}
-    entrypoint: {{ services[service_name].entrypoint }}
+        entrypoint: {{ services[service_name].entrypoint }}
 {%endif%}
 {% if "container_name" in services[service_name] %}
-    container_name: {{services[service_name].container_name}}
+        container_name: {{services[service_name].container_name}}
 {% endif %}
 {% if "command" in services[service_name] %}
         command: "{{services[service_name].command}}"

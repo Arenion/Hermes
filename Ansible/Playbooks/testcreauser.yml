@@ -1,17 +1,71 @@
 - name: "Test if creation of user work"
-  hosts: services
-  roles:
-    - role: creation_comptes
+  hosts: mysql
+  vars:
+    hermes_confpath: /home/vannereux/Documents/Dossieleo/Hermes/Ansible/Configurations
   tasks:
+    - name: Create Utilisateurs-Services user group
+      ansible.builtin.group:
+        name: Utilisateurs-Services
+      notify:
+        - Prevent user access through ssh
+        - Permit access through sftp
+        - Restart sshd
+      become: true
+
+    - name: Install Needed-packets
+      ansible.builtin.apt:
+        name:
+          - docker
+          - docker-compose
+      become: true
+    - name: Install docker-compose V2
+      ansible.builtin.include_role:
+        name: Install_docker_compose_v2
+    # - name: Get password for mysql
+    #   community.hashi_vault.vault_kv2_get:
+    #     path: "databases/admin@mysql.rezoleo.fr"
+    #     url: "https://vault.rezoleo.fr/" # on met ça là parceque je ne veux pas utiliser la variable d'environnement ( je me sert de l'url que ici) si il faut l'utiliser autre part sur hermes, je le mettrai là et je supprimerais cette ligne
+    #     token_path: "~/.vault-token"
+    #   register: mysql_secret
+    #   delegate_to: localhost
+    #   run_once: true
     - name: Load Config file
       ansible.builtin.include_vars:
-        file: /home/vannereux/Documents/Dossieleo/Hermes/Ansible/Configurations/conf_absinthe.yml
+        file: "{{ hermes_confpath }}/conf_users.yml"
+      delegate_to: localhost
+
+    - name: "Create user and set up his containers"
+      ansible.builtin.include_role:
+        name: hermes_account
+      loop: "{{ users }}"
+      loop_control:
+        loop_var: usern
     # - name: Debug
     #   ansible.builtin.debug:
-    #     msg: "{{ liste_sites  }}"
-    - name: "Initialisation des fichiers docker-compose des sites "
-      ansible.builtin.include_role:
-        name: docker_init
-      # loop: "{{ sites | dict2items }}"
-      # loop_control:
-      #   loop_var: site
+    #     msg: "{{ usern }}"
+
+  handlers:
+    - name: Prevent user access through ssh
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        line: "DenyUsers Utilisateurs-Services"
+
+    - name: Permit access through sftp
+      become: true
+      ansible.builtin.blockinfile:
+        path: /etc/ssh/sshd_config
+        block: |
+          Match Group Utilisateurs-Services # indique que les lignes suivantes n'ont d'influence que sur le groupe Utilisateurs-Services
+            ChrootDirectory %h          # restreint l'accès au dossier %home de l'utilisateur.
+            X11Forwarding no            # empêche l'usage de déport d'affichage.
+            AllowTcpForwarding no       # empêche l'usage de la redirection TCP.
+            PermitTTY no
+            ForceCommand internal-sftp  # impose l'utilisation du sftp pour se connecter.
+
+    - name: Restart sshd
+      become: true
+      ansible.builtin.service:
+        name: "sshd"
+        state: restarted
+        enabled: true
