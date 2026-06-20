@@ -1,10 +1,7 @@
 # !/usr/bin/python
 # -*- encoding: utf8 -*-'
-<<<<<<< HEAD
-# import crypt
-=======
+
 #import crypt
->>>>>>> d2403751f163c448f75634bb7bb9530a741926bd
 
 Type_Renouvellement_annuel= ['Association','Liste','Projet','Divers']
 Type_Personnel= ['PDI','Projet Individuel']
